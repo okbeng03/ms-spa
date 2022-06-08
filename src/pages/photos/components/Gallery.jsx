@@ -1,9 +1,24 @@
+import { useState } from 'react';
 import { Empty } from 'antd';
 import dayjs from 'dayjs';
 import PhotoItem from './Photo';
+import CropperModal from './CropperModal';
 
 function Gallery(props) {
-  const { objects, total } = props
+  const { bucket } = props
+  const { objects, total } = bucket
+  const [ cropperVisible, setCropperVisible ] = useState(false)
+  const [ cropper, setCropper ] = useState(null)
+
+  const handlerView = (photo) => {
+    if (bucket.tags?.type === 'needrecognition') {
+      // 裁剪
+      setCropper(photo)
+      setCropperVisible(true)
+    } else {
+      // 预览
+    }
+  }
 
   const renderGroup = (group) => {
     return (
@@ -15,7 +30,11 @@ function Gallery(props) {
           {
             group.list.map(item => {
               return (
-                <PhotoItem photo={item} key={item.name}></PhotoItem>
+                <PhotoItem
+                  photo={item}
+                  key={item.name}
+                  onView={handlerView}
+                ></PhotoItem>
               )
             })
           }
@@ -41,6 +60,11 @@ function Gallery(props) {
           ? renderGallery()
           : <div className="empty"><Empty description="暂无图片"></Empty></div>
       }
+      <CropperModal
+        visible={cropperVisible}
+        photo={cropper}
+        onCancel={() => setCropperVisible(false)}
+      ></CropperModal>
     </div>
   )
 }

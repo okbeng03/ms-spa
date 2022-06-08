@@ -33,7 +33,7 @@ function Photos() {
       {
         loading
           ? <div className="loading"><Spin size="large"></Spin></div>
-          : <Gallery objects={bucket.objects} total={bucket.total}></Gallery>
+          : <Gallery bucket={bucket}></Gallery>
       }
     </div>
   )

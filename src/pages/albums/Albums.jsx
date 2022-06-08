@@ -28,7 +28,7 @@ function Albums() {
             return (
               <div className="album-item" key={album.name}>
                 {
-                  album.type === 'upload'
+                  album.tags?.type === 'nogroup'
                     ? <UploadItem album={album}></UploadItem>
                     : <AlbumItem album={album}></AlbumItem>
                 }

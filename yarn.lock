@@ -3168,6 +3168,11 @@ cliui@^7.0.2:
     strip-ansi "^6.0.0"
     wrap-ansi "^7.0.0"
 
+clsx@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.npmmirror.com/clsx/-/clsx-1.1.1.tgz#98b3134f9abbdf23b2663491ace13c5c03a73188"
+  integrity sha512-6/bPho624p3S2pMyvP5kKBPXnI3ufHLObBFCfgx+LkeR5lg2XYy2hqZqUf45ypD8COn2bhgGJSUE+l5dhNBieA==
+
 co@^4.6.0:
   version "4.6.0"
   resolved "https://registry.yarnpkg.com/co/-/co-4.6.0.tgz#6ea6bdf3d853ae54ccb8e47bfa0bf3f9031fb184"
@@ -7880,6 +7885,13 @@ react-error-overlay@^6.0.11:
   version "6.0.11"
   resolved "https://registry.yarnpkg.com/react-error-overlay/-/react-error-overlay-6.0.11.tgz#92835de5841c5cf08ba00ddd2d677b6d17ff9adb"
   integrity sha512-/6UZ2qgEyH2aqzYZgQPxEnz33NJ2gNsnHA2o5+o4wW9bLM/JYQitNP9xPhsXwC08hMMovfGe/8retsdDsczPRg==
+
+react-image-crop@^10.0.2:
+  version "10.0.2"
+  resolved "https://registry.npmmirror.com/react-image-crop/-/react-image-crop-10.0.2.tgz#e14c3e0f99c06ef260d50991df59b67ee8e34d33"
+  integrity sha512-aOsnQRaEQBDyVoYCRmoviKIcp0iaPMo5Hy81j6IKP75qn36cU0xmssXzptDyF+eSxxadLrpmArXNUCR/kGyp6A==
+  dependencies:
+    clsx "^1.1.1"
 
 react-is@^16.12.0, react-is@^16.13.1:
   version "16.13.1"

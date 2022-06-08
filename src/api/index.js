@@ -2,15 +2,15 @@ import requst from '../lib/requst'
 import { groupBy } from 'lodash'
 import dayjs from 'dayjs'
 
+// 获取相册列表
 export const fetchAlbums = async function() {
   try {
     const list = await requst({
       url: '/api/sso/albums'
     })
 
-    const idx = list.findIndex(item => item.name === 'ms-nogroup')
+    const idx = list.findIndex(item => item.tags?.type === 'nogroup')
     const noGroup = list.splice(idx, 1)[0]
-    noGroup.type = 'upload'
     list.unshift(noGroup)
 
     return list
@@ -19,6 +19,7 @@ export const fetchAlbums = async function() {
   }
 }
 
+// 获取相片列表
 export const fetchPhotos = async function(id) {
   try {
     const bucket = await requst({
@@ -45,6 +46,21 @@ export const fetchPhotos = async function(id) {
     }
 
     return bucket
+  } catch (err) {
+    throw err
+  }
+}
+
+export const addCollection = async function(stream, subject) {
+  try {
+    return await requst({
+      method: 'post',
+      url: '/api/faceai/addCollection',
+      data: {
+        image: stream,
+        subject
+      }
+    })
   } catch (err) {
     throw err
   }
