@@ -60,11 +60,13 @@ function Gallery(props) {
           ? renderGallery()
           : <div className="empty"><Empty description="暂无图片"></Empty></div>
       }
-      <CropperModal
-        visible={cropperVisible}
-        photo={cropper}
-        onCancel={() => setCropperVisible(false)}
-      ></CropperModal>
+      {
+        bucket.tags?.type === 'needrecognition' ? <CropperModal
+          visible={cropperVisible}
+          photo={cropper}
+          onCancel={() => setCropperVisible(false)}
+        ></CropperModal> : null
+      }
     </div>
   )
 }
