@@ -6,7 +6,7 @@ export default function (options) {
     axios(options).then(response => {
       const { status, data } = response
 
-      if (status === 200) {
+      if (status >= 200 && status <= 300) {
         resolve(data)
       } else {
         reject(new Error('网络异常，请稍后再试'))

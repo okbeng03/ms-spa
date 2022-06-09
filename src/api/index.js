@@ -65,3 +65,20 @@ export const addCollection = async function(stream, subject) {
     throw err
   }
 }
+
+export const fetchSujects = async function() {
+  try {
+    const result = await requst({
+      url: '/api/faceai/subjects'
+    })
+
+    return result.subjects.map(item => {
+      return {
+        label: item,
+        value: item
+      }
+    })
+  } catch (err) {
+    throw err
+  }
+}
