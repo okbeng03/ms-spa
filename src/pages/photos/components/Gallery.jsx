@@ -1,13 +1,14 @@
 import { useState } from 'react';
-import { Empty } from 'antd';
+import { Empty, Checkbox } from 'antd';
 import { PhotoProvider, PhotoView } from 'react-photo-view';
+import className from 'classname';
 import dayjs from 'dayjs';
 import PhotoItem from './Photo';
 import CropperModal from './CropperModal';
 import 'react-photo-view/dist/react-photo-view.css';
 
 function Gallery(props) {
-  const { bucket } = props
+  const { bucket, batch } = props
   const { objects, total } = bucket
   const [ cropperVisible, setCropperVisible ] = useState(false)
   const [ cropper, setCropper ] = useState(null)
@@ -56,13 +57,15 @@ function Gallery(props) {
 
     return (
       <PhotoProvider>
-        {gallerys}
+        <Checkbox.Group onChange={props.onSelect}>
+          {gallerys}
+        </Checkbox.Group>
       </PhotoProvider>
     )
   }
 
   return (
-    <div className="mod-gallery">
+    <div className={className({'mod-gallery': true, 'batch': batch})}>
       {
         total
           ? renderGallery()

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
 import { Spin, message } from "antd";
 import Header from "./components/Header";
@@ -10,6 +10,9 @@ function Photos() {
   const params = useParams()
   const [loading, setLoading] = useState(true)
   const [bucket, setBucket] = useState(null)
+  const batchRef = useRef(false)
+  const [batch, setBatch] = useState(batchRef.current)
+  const [selects, setSelect] = useState([])
 
   useEffect(() => {
     async function fetch () {
@@ -21,6 +24,10 @@ function Photos() {
     
     fetch()
   }, [])
+
+  useEffect(() => {
+    batchRef.current = batch
+  }, [batch])
 
   // 重新识别
   const hanlderRecognition = async () => {
@@ -42,6 +49,16 @@ function Photos() {
     }
   }
 
+  // 批量管理
+  const handleBatch = () => {
+    setBatch(!batchRef.current)
+  }
+
+  // 批量选择
+  const handleBatchSelect = (values) => {
+    setSelect(values)
+  }
+
   return (
     <div className="page-photos page">
       <Header
@@ -49,12 +66,18 @@ function Photos() {
         date={bucket?.creationDate}
         total={bucket?.total || 0}
         tags={bucket?.tags}
+        batch={batch}
         onRecognition={hanlderRecognition}
+        onBatch={handleBatch}
       ></Header>
       {
         loading
           ? <div className="loading"><Spin size="large"></Spin></div>
-          : <Gallery bucket={bucket}></Gallery>
+          : <Gallery
+              batch={batch}
+              bucket={bucket}
+              onSelect={handleBatchSelect}
+            ></Gallery>
       }
     </div>
   )

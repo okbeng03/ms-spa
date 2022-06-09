@@ -9,6 +9,32 @@
       }
     }
   }
+
+  .page-header {
+    .ant-page-header-content {
+      position: relative;
+    }
+
+    .batch-operation {
+      display: none;
+      position: absolute;
+      top: 0;
+      right: 0;
+
+      .anticon {
+        font-size: 18px;
+        color: #666;
+  
+        &:hover {
+          color: #00f;
+        }
+      }
+
+      &.show {
+        display: block;
+      }
+    }
+  }
 }
 
 .mod-gallery {
@@ -51,18 +77,32 @@
     cursor: pointer;
 
     dt {
+      position: relative;
       margin-bottom: 0;
       height: 240px;
       width: 240px;
       border-radius: 4px;
       overflow: hidden;
-      background-color: #f2f2f2; 
+      background-color: #f2f2f2;
+
+      .ant-checkbox-wrapper {
+        display: none;
+        position: absolute;
+        top: 0;
+        left: 4px;
+      }
     }
 
     img {
       object-fit: cover;
       width: 100%;
       height: 100%;
+    }
+  }
+
+  &.batch {
+    .photo-item dt .ant-checkbox-wrapper {
+      display: inline-block;
     }
   }
 }
