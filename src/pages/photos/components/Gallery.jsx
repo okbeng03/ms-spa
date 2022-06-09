@@ -1,8 +1,10 @@
 import { useState } from 'react';
 import { Empty } from 'antd';
+import { PhotoProvider, PhotoView } from 'react-photo-view';
 import dayjs from 'dayjs';
 import PhotoItem from './Photo';
 import CropperModal from './CropperModal';
+import 'react-photo-view/dist/react-photo-view.css';
 
 function Gallery(props) {
   const { bucket } = props
@@ -10,13 +12,12 @@ function Gallery(props) {
   const [ cropperVisible, setCropperVisible ] = useState(false)
   const [ cropper, setCropper ] = useState(null)
 
-  const handlerView = (photo) => {
+  const handlerView = (e, photo) => {
     if (bucket.tags?.type === 'needrecognition') {
+      e.stopPropagation()
       // 裁剪
       setCropper(photo)
       setCropperVisible(true)
-    } else {
-      // 预览
     }
   }
 
@@ -30,11 +31,14 @@ function Gallery(props) {
           {
             group.list.map(item => {
               return (
-                <PhotoItem
-                  photo={item}
-                  key={item.name}
-                  onView={handlerView}
-                ></PhotoItem>
+                <PhotoView key={item.name} src={item.source}>
+                  <div>
+                    <PhotoItem
+                      photo={item}
+                      onView={handlerView}
+                    ></PhotoItem>
+                  </div>
+                </PhotoView>
               )
             })
           }
@@ -50,7 +54,11 @@ function Gallery(props) {
       gallerys.push(renderGroup(group))
     }
 
-    return gallerys
+    return (
+      <PhotoProvider>
+        {gallerys}
+      </PhotoProvider>
+    )
   }
 
   return (
@@ -61,11 +69,13 @@ function Gallery(props) {
           : <div className="empty"><Empty description="暂无图片"></Empty></div>
       }
       {
-        bucket.tags?.type === 'needrecognition' ? <CropperModal
-          visible={cropperVisible}
-          photo={cropper}
-          onCancel={() => setCropperVisible(false)}
-        ></CropperModal> : null
+        bucket.tags?.type === 'needrecognition'
+          ? <CropperModal
+              visible={cropperVisible}
+              photo={cropper}
+              onCancel={() => setCropperVisible(false)}
+            ></CropperModal>
+          : null
       }
     </div>
   )

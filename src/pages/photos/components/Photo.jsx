@@ -1,12 +1,12 @@
 function PhotoItem(props) {
   const { photo } = props
 
-  const handleClick = () => {
-    props.onView(photo)
+  const handleClick = (e) => {
+    props.onView(e, photo)
   }
 
   return (
-    <dl className="photo-item" onClick={() => handleClick()}>
+    <dl className="photo-item" onClick={(e) => handleClick(e)}>
       <dt>
         <img src={photo.thumb}></img>
       </dt>
