@@ -66,6 +66,7 @@ export const addCollection = async function(stream, subject) {
   }
 }
 
+// 获取subject列表
 export const fetchSujects = async function() {
   try {
     const result = await requst({
@@ -76,6 +77,22 @@ export const fetchSujects = async function() {
       return {
         label: item,
         value: item
+      }
+    })
+  } catch (err) {
+    throw err
+  }
+}
+
+// 重新识别
+export const reRecognition = async function(bucketName, objects) {
+  try {
+    return await requst({
+      method: 'post',
+      url: '/api/sso/reRecognition',
+      data: {
+        bucketName,
+        objects
       }
     })
   } catch (err) {
