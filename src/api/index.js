@@ -1,6 +1,6 @@
 import requst from '../lib/requst'
 import { groupBy } from 'lodash'
-import dayjs from 'dayjs'
+import moment from 'moment'
 
 // 获取相册列表
 export const fetchAlbums = async function() {
@@ -29,7 +29,7 @@ export const fetchPhotos = async function(id) {
     // 时间聚合
     if (bucket.total) {
       const group = groupBy(bucket.objects, item => {
-        return dayjs(item.tags?.orginTime || item.lastModified).format('YYYY-MM-DD')
+        return moment(item.tags?.orginTime || item.lastModified).format('YYYY-MM-DD')
       })
       const list = []
 
@@ -94,6 +94,19 @@ export const reRecognition = async function(bucketName, objects) {
         bucketName,
         objects
       }
+    })
+  } catch (err) {
+    throw err
+  }
+}
+
+// 编辑相册
+export const updateGallery = async function(data) {
+  try {
+    return await requst({
+      method: 'post',
+      url: '/api/sso/update',
+      data
     })
   } catch (err) {
     throw err

@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { Spin, message } from "antd";
 import Header from "./components/Header";
 import Gallery from "./components/Gallery";
+import GalleryEdit from "./components/GalleryEdit";
 import { fetchPhotos, reRecognition } from "../../api";
 import "./Photos.less";
 
@@ -13,6 +14,7 @@ function Photos() {
   const batchRef = useRef(false)
   const [batch, setBatch] = useState(batchRef.current)
   const [selects, setSelect] = useState([])
+  const [type, setType] = useState('')
 
   useEffect(() => {
     async function fetch () {
@@ -61,7 +63,7 @@ function Photos() {
 
   // 相册编辑
   const handleGalleryEdit = () => {
-    
+    setType('galleryEdit')
   }
 
   return (
@@ -84,6 +86,14 @@ function Photos() {
               bucket={bucket}
               onSelect={handleBatchSelect}
             ></Gallery>
+      }
+      {
+        bucket ? <GalleryEdit
+          visible={type === 'galleryEdit'}
+          bucketName={bucket?.name}
+          tags={bucket?.tags}
+          onCancel={() => setType('')}
+        ></GalleryEdit> : null
       }
     </div>
   )

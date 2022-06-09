@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Empty, Checkbox } from 'antd';
 import { PhotoProvider, PhotoView } from 'react-photo-view';
 import className from 'classname';
-import dayjs from 'dayjs';
+import moment from 'moment';
 import PhotoItem from './Photo';
 import CropperModal from './CropperModal';
 import 'react-photo-view/dist/react-photo-view.css';
@@ -26,7 +26,7 @@ function Gallery(props) {
     return (
       <div className="group" key={group.date}>
         <div className="group-header">
-          {dayjs(group.date).format('YYYY-MM-DD')}
+          {moment(group.date).format('YYYY-MM-DD')}
         </div>
         <div className="group-body">
           {

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Space, PageHeader, Descriptions, Tooltip, Divider } from 'antd';
 import { TrademarkOutlined, EditOutlined, DownloadOutlined, CopyOutlined, SwapOutlined, DeleteOutlined, MoreOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
-import dayjs from 'dayjs';
+import moment from 'moment';
 import className from 'classname'
 
 function Header(props) {
@@ -105,7 +105,7 @@ function Header(props) {
         </Space>
       </div>
       <Descriptions size="small" column={3}>
-        <Descriptions.Item label="创建时间">{dayjs(props.date).format('YYYY-MM-DD')}</Descriptions.Item>
+        <Descriptions.Item label="创建时间">{moment(props.date).format('YYYY-MM-DD')}</Descriptions.Item>
         {
           props.tags?.description ? <Descriptions.Item label="描述">
             {props.tags?.description}
