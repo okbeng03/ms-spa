@@ -29,7 +29,7 @@ export const fetchPhotos = async function(id) {
     // 时间聚合
     if (bucket.total) {
       const group = groupBy(bucket.objects, item => {
-        return dayjs(item.orginTime || item.lastModified).format('YYYY-MM-DD')
+        return dayjs(item.tags?.orginTime || item.lastModified).format('YYYY-MM-DD')
       })
       const list = []
 
