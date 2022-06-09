@@ -33,7 +33,7 @@ function Gallery(props) {
             group.list.map(item => {
               return (
                 <PhotoView key={item.name} src={item.source}>
-                  <div>
+                  <div className="photo-item">
                     <PhotoItem
                       photo={item}
                       onView={handlerView}

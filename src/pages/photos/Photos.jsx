@@ -59,6 +59,11 @@ function Photos() {
     setSelect(values)
   }
 
+  // 相册编辑
+  const handleGalleryEdit = () => {
+    
+  }
+
   return (
     <div className="page-photos page">
       <Header
@@ -69,6 +74,7 @@ function Photos() {
         batch={batch}
         onRecognition={hanlderRecognition}
         onBatch={handleBatch}
+        onEdit={handleGalleryEdit}
       ></Header>
       {
         loading
