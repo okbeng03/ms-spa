@@ -4,7 +4,8 @@ import { Spin, message } from "antd";
 import Header from "./components/Header";
 import Gallery from "./components/Gallery";
 import GalleryEdit from "./components/GalleryEdit";
-import { fetchPhotos, reRecognition } from "../../api";
+import GallerySelect from "./components/GallerySelect";
+import { fetchPhotos, reRecognition, copyObjects, moveObjects } from "../../api";
 import "./Photos.less";
 
 function Photos() {
@@ -66,6 +67,46 @@ function Photos() {
     setType('galleryEdit')
   }
 
+  // 复制
+  const handleCopy = () => {
+    if (!selects || !selects.length) {
+      message.error('请至少选择一个文件！')
+      return
+    }
+
+    setType('copy')
+  }
+
+  // 移动
+  const hanldeMove = () => {
+    if (!selects || !selects.length) {
+      message.error('请至少选择一个文件！')
+      return
+    }
+
+    setType('move')
+  }
+
+  const handleCopyOrMove = async (newBucketName) => {
+    const title = type === 'copy' ? '复制' : '移动'
+
+    try {
+      const method = type === 'copy' ? copyObjects : moveObjects
+      await method({
+        bucketName: bucket.name,
+        list: selects,
+        newBucketName
+      })
+
+      message.success(title + '成功，即将刷新页面!', function() {
+        window.location.href = '/'
+      })
+    } catch (err) {
+      setType('')
+      message.error(title + '失败::' + err.message)
+    }
+  }
+
   return (
     <div className="page-photos page">
       <Header
@@ -77,6 +118,8 @@ function Photos() {
         onRecognition={hanlderRecognition}
         onBatch={handleBatch}
         onEdit={handleGalleryEdit}
+        onCopy={handleCopy}
+        onMove={hanldeMove}
       ></Header>
       {
         loading
@@ -95,6 +138,11 @@ function Photos() {
           onCancel={() => setType('')}
         ></GalleryEdit> : null
       }
+      <GallerySelect
+        visible={type === 'copy' || type === 'move'}
+        onCancel={() => setType('')}
+        onOk={handleCopyOrMove}
+      ></GallerySelect>
     </div>
   )
 }

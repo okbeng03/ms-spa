@@ -10,7 +10,9 @@ function PhotoItem(props) {
   return (
     <dl onClick={(e) => handleClick(e)}>
       <dt>
-        <Checkbox value={photo.name} onClick={(e) => {e.stopPropagation()}}></Checkbox>
+        <span onClick={(e) => {e.stopPropagation()}}>
+          <Checkbox value={photo.name}></Checkbox>
+        </span>
         <img src={photo.thumb}></img>
       </dt>
     </dl>

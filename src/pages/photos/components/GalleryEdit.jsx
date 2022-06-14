@@ -8,7 +8,7 @@ function GalleryEdit(props) {
   const [form] = Form.useForm()
 
   useState(() => {
-    if (tags.birthday) {
+    if (tags?.birthday) {
       tags.birthday = moment(tags.birthday)
     }
     

@@ -112,3 +112,29 @@ export const updateGallery = async function(data) {
     throw err
   }
 }
+
+// 批量复制
+export const copyObjects = async function(data) {
+  try {
+    return await requst({
+      method: 'post',
+      url: '/api/sso/copy',
+      data
+    })
+  } catch (err) {
+    throw err
+  }
+}
+
+// 批量移动
+export const moveObjects = async function(data) {
+  try {
+    return await requst({
+      method: 'post',
+      url: '/api/sso/move',
+      data
+    })
+  } catch (err) {
+    throw err
+  }
+}
