@@ -138,3 +138,16 @@ export const moveObjects = async function(data) {
     throw err
   }
 }
+
+// 批量删除
+export const removeObjects = async function(data) {
+  try {
+    return await requst({
+      method: 'post',
+      url: '/api/sso/remove',
+      data
+    })
+  } catch (err) {
+    throw err
+  }
+}

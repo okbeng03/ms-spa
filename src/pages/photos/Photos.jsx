@@ -5,7 +5,7 @@ import Header from "./components/Header";
 import Gallery from "./components/Gallery";
 import GalleryEdit from "./components/GalleryEdit";
 import GallerySelect from "./components/GallerySelect";
-import { fetchPhotos, reRecognition, copyObjects, moveObjects } from "../../api";
+import { fetchPhotos, reRecognition, copyObjects, moveObjects, removeObjects } from "../../api";
 import "./Photos.less";
 
 function Photos() {
@@ -107,6 +107,27 @@ function Photos() {
     }
   }
 
+  // 批量删除
+  const handleRemove = async () => {
+    if (!selects || !selects.length) {
+      message.error('请至少选择一个文件！')
+      return
+    }
+
+    try {
+      await removeObjects({
+        bucketName: bucket.name,
+        objectsList: selects
+      })
+
+      message.success('删除成功，即将刷新页面!', function() {
+        window.location.href = '/'
+      })
+    } catch (err) {
+      message.error('删除失败::' + err.message)
+    }
+  }
+
   return (
     <div className="page-photos page">
       <Header
@@ -120,6 +141,7 @@ function Photos() {
         onEdit={handleGalleryEdit}
         onCopy={handleCopy}
         onMove={hanldeMove}
+        onRemove={handleRemove}
       ></Header>
       {
         loading
