@@ -62,15 +62,15 @@ export async function getCroppedImg(imageSrc, crop, rotation = 0) {
   // croppedAreaPixels values are bounding box relative
   // extract the cropped image using these values
   const data = ctx.getImageData(
-    crop.x,
-    crop.y,
-    crop.width,
-    crop.height
+    crop.x * crop.scaleX,
+    crop.y * crop.scaleY,
+    crop.width * crop.scaleX,
+    crop.height * crop.scaleY
   )
 
   // set canvas width to final desired crop size - this will clear existing context
-  canvas.width = crop.width
-  canvas.height = crop.height
+  canvas.width = crop.width * crop.scaleX
+  canvas.height = crop.height * crop.scaleY
 
   // paste generated rotate image at the top left corner
   ctx.putImageData(data, 0, 0)

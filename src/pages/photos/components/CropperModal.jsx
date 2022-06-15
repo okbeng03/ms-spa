@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { PlusOutlined } from '@ant-design/icons';
 import { Modal, Divider, Input, Select, Space, Typography, message } from 'antd';
 import ReactCrop from 'react-image-crop';
@@ -11,7 +11,8 @@ function CropperModal(props) {
   const [ crop, setCrop ] = useState()
   const [ subjects, setSubjects ] = useState([])
   const [ name, setName ] = useState('')
-  const [ subject, setSubject ] = useState();
+  const [ subject, setSubject ] = useState()
+  const image = useRef(null)
 
   useEffect(() => {
     async function fetch() {
@@ -23,7 +24,11 @@ function CropperModal(props) {
   }, [])
 
   const handleOk = async () => {
-    const img = await getCroppedImg(photo.source, crop)
+    const img = await getCroppedImg(photo.source, {
+      ...crop,
+      scaleX: image.current.naturalWidth / image.current.clientWidth,
+      scaleY: image.current.naturalHeight / image.current.clientHeight
+    })
 
     try {
       await addCollection(img, subject)
@@ -63,7 +68,7 @@ function CropperModal(props) {
       width="86%"
     >
       <ReactCrop crop={crop} onChange={c => setCrop(c)}>
-        <img src={photo?.source} />
+        <img ref={image} src={photo?.source} />
       </ReactCrop>
       <div>
         <Select
