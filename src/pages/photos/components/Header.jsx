@@ -104,7 +104,7 @@ function Header(props) {
           </Tooltip>
         </Space>
       </div>
-      <Descriptions size="small" column={3}>
+      <Descriptions size="small" column={2}>
         <Descriptions.Item label="创建时间">{moment(props.date).format('YYYY-MM-DD')}</Descriptions.Item>
         {
           props.tags?.description ? <Descriptions.Item label="描述">

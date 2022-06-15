@@ -18,7 +18,7 @@
     .batch-operation {
       display: none;
       position: absolute;
-      top: 0;
+      top: -8px;
       right: 0;
 
       .anticon {
@@ -40,6 +40,10 @@
 .mod-gallery {
   padding: 20px 0;
   background-color: #f2f2f2;
+
+  .select-all {
+    margin: -10px 20px 10px;
+  }
 
   .empty {
     display: flex;
@@ -107,13 +111,15 @@
 
   &.batch {
     .photo-item dt .ant-checkbox-wrapper {
-      display: inline-block;
+      display: inline-flex;
     }
   }
 }
 
 @media only screen and (max-width:768px) {
   .mod-gallery {
+    padding: 10px 0;
+
     .group {
       padding: 0;
     }
@@ -124,6 +130,7 @@
 
     .photo-item {
       width: 50%;
+      box-sizing: border-box;
 
       dt {
         height: calc(50vw - 12px);
