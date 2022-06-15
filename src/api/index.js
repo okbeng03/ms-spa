@@ -1,3 +1,4 @@
+import axios from 'axios'
 import requst from '../lib/requst'
 import { groupBy } from 'lodash'
 import moment from 'moment'
@@ -149,5 +150,51 @@ export const removeObjects = async function(data) {
     })
   } catch (err) {
     throw err
+  }
+}
+
+// 批量删除
+export const download = async function(data) {
+  try {
+    return await exportFile('/api/sso/download', data, 'aaa.zip')
+  } catch (err) {
+    throw err
+  }
+}
+
+// 导出
+async function exportFile (api, params, file) {
+  try {
+    const { status, data } = await axios({
+      url: api,
+      method: 'post',
+      data: params,
+      responseType: 'blob'
+    })
+
+    if (status === 201) {
+      if (!window.Blob) {
+        return Promise.reject(new Error('该浏览器不支持数据流下载，请更换浏览器'))
+      }
+
+      const blob = new Blob([data])
+
+      if ('download' in document.createElement('a')) { // 非IE下载
+        const elink = document.createElement('a')
+        elink.download = file
+        elink.style.display = 'none'
+        elink.href = URL.createObjectURL(blob)
+        document.body.appendChild(elink)
+        elink.click()
+        URL.revokeObjectURL(elink.href) // 释放URL 对象
+        document.body.removeChild(elink)
+      } else { // IE10+下载
+        navigator.msSaveBlob(blob, file)
+      }
+    } else {
+      return Promise.reject(new Error('网络异常，请稍后再试！'))
+    }
+  } catch (err) {
+    return Promise.reject(err)
   }
 }

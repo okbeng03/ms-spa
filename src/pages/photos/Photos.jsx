@@ -5,7 +5,7 @@ import Header from "./components/Header";
 import Gallery from "./components/Gallery";
 import GalleryEdit from "./components/GalleryEdit";
 import GallerySelect from "./components/GallerySelect";
-import { fetchPhotos, reRecognition, copyObjects, moveObjects, removeObjects } from "../../api";
+import { fetchPhotos, reRecognition, copyObjects, moveObjects, removeObjects, download } from "../../api";
 import "./Photos.less";
 
 function Photos() {
@@ -128,6 +128,23 @@ function Photos() {
     }
   }
 
+  // 批量下载
+  const handleDownload = async () => {
+    if (!selects || !selects.length) {
+      message.error('请至少选择一个文件！')
+      return
+    }
+
+    try {
+      await download({
+        bucketName: bucket.name,
+        list: selects
+      })
+    } catch (err) {
+      message.error('下载失败::' + err.message)
+    }
+  }
+
   return (
     <div className="page-photos page">
       <Header
@@ -142,6 +159,7 @@ function Photos() {
         onCopy={handleCopy}
         onMove={hanldeMove}
         onRemove={handleRemove}
+        onDownload={handleDownload}
       ></Header>
       {
         loading
