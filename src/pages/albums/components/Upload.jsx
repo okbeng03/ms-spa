@@ -3,6 +3,7 @@ import { UploadOutlined, InboxOutlined } from '@ant-design/icons'
 import { Modal, Upload, message } from 'antd'
 
 const { Dragger } = Upload;
+const regExt = /\S+(\.\w+)$/
 
 function UploadItem(props) {
   const [visible, setVisible] = useState(false)
@@ -12,18 +13,31 @@ function UploadItem(props) {
     multiple: true,
     action: '/api/sso/upload',
     onChange(info) {
-      const { status } = info.file;
+      const { status } = info.file
 
       if (status === 'done') {
-        message.success(`${info.file.name} 文件上传成功.`);
+        message.success(`${info.file.name} 文件上传成功.`)
       } else if (status === 'error') {
         const { error } = info.file
 
         if (error.status === 413) {
-          message.error(`${info.file.name} 因文件太大上传失败.`);  
+          message.error(`${info.file.name} 因文件太大上传失败.`); 
         } else {
-          message.error(`${info.file.name} 上传失败.`);
+          message.error(`${info.file.name} 上传失败.`)
         }
+      }
+    },
+    beforeUpload(file) {
+      try {
+        const match = file.name.match(regExt)
+        Object.defineProperty(file, 'name', {
+          writable: true
+        })
+        file.name = `${file.lastModified}${match[1]}`
+
+        return Promise.resolve(file)
+      } catch (err) {
+        console.error(err)
       }
     }
   };
