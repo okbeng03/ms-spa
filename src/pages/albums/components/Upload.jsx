@@ -27,19 +27,19 @@ function UploadItem(props) {
         }
       }
     },
-    beforeUpload(file) {
-      try {
-        const match = file.name.match(regExt)
-        Object.defineProperty(file, 'name', {
-          writable: true
-        })
-        file.name = `${file.lastModified}${match[1]}`
+    // beforeUpload(file) {
+    //   try {
+    //     const match = file.name.match(regExt)
+    //     Object.defineProperty(file, 'name', {
+    //       writable: true
+    //     })
+    //     file.name = `${file.lastModified}${match[1]}`
 
-        return Promise.resolve(file)
-      } catch (err) {
-        console.error(err)
-      }
-    }
+    //     return Promise.resolve(file)
+    //   } catch (err) {
+    //     console.error(err)
+    //   }
+    // }
   };
 
   return (
