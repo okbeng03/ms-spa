@@ -39,6 +39,7 @@ function GalleryEdit(props) {
       title="编辑相册"
       visible={visible}
       footer={null}
+      onCancel={props.onCancel}
     >
       <Form
         layout="vertical"
