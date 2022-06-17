@@ -4,6 +4,7 @@ import { Modal, Upload, message } from 'antd'
 
 const { Dragger } = Upload;
 const regExt = /\S+(\.\w+)$/
+const regQQ = /^(\d{4}_\d{4}-\d{2}-\d{2})_\S+(\.\w+)$/
 
 function UploadItem(props) {
   const [visible, setVisible] = useState(false)
@@ -27,19 +28,23 @@ function UploadItem(props) {
         }
       }
     },
-    // beforeUpload(file) {
-    //   try {
-    //     const match = file.name.match(regExt)
-    //     Object.defineProperty(file, 'name', {
-    //       writable: true
-    //     })
-    //     file.name = `${file.lastModified}${match[1]}`
+    beforeUpload(file) {
+      try {
+        const match = file.name.match(regQQ)
 
-    //     return Promise.resolve(file)
-    //   } catch (err) {
-    //     console.error(err)
-    //   }
-    // }
+        if (!match) {
+          const match = file.name.match(regExt)
+          Object.defineProperty(file, 'name', {
+            writable: true
+          })
+          file.name = `${file.lastModified}${match[1]}`
+        }
+
+        return Promise.resolve(file)
+      } catch (err) {
+        console.error(err)
+      }
+    }
   };
 
   return (
