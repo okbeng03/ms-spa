@@ -17,7 +17,7 @@ function UploadItem(props) {
       const { status } = info.file
 
       if (status === 'done') {
-        message.success(`${info.file.name} 文件上传成功.`)
+        message.success(`${info.file.name} 文件上传成功，识别耗时较长，请耐心等待结果，稍后刷新页面试试!`)
       } else if (status === 'error') {
         const { error } = info.file
 
