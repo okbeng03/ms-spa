@@ -1,11 +1,16 @@
 import { useState, useEffect } from 'react';
 import { Empty, Checkbox } from 'antd';
 import { PhotoProvider, PhotoView } from 'react-photo-view';
+import { Player } from 'video-react';
 import className from 'classname';
 import moment from 'moment';
 import PhotoItem from './Photo';
 import CropperModal from './CropperModal';
+
 import 'react-photo-view/dist/react-photo-view.css';
+import 'video-react/dist/video-react.css';
+
+const regVideoFile = /(avi|wmv|mpe?g|mov|ra?m|swf|flv|mp4)$/
 
 function Gallery(props) {
   const { bucket, batch, onSelect } = props
@@ -68,16 +73,85 @@ function Gallery(props) {
         <div className="group-body">
           {
             group.list.map(item => {
-              return (
-                <PhotoView key={item.name} src={item.source}>
-                  <div className="photo-item">
-                    <PhotoItem
-                      photo={item}
-                      onView={handlerView}
-                    ></PhotoItem>
-                  </div>
-                </PhotoView>
-              )
+              item.source = item.source || ''
+              item.width = item.tags.width - 0
+              item.height = item.tags.height - 0
+
+              if (regVideoFile.test(item.source)) {
+                // 视频
+                const wWidth = window.innerWidth
+                const wHeight = window.innerHeight
+                const wFit = wWidth >= item.width
+                const hFit = wHeight >= item.height
+                let eWidth
+                let eHeight
+
+                if (wFit && hFit) {
+                  // 屏幕比视频大，按视频尺寸
+                  eWidth = item.width
+                  eHeight = item.height
+                } else {
+                  let scale
+
+                  if (!wFit && !hFit) {
+                    // 视频比屏幕都大，按差更多的那边适配
+                    const wSuit = (item.width / wWidth) >= (item.height / wHeight)
+                    scale = wSuit > 0 ? wWidth / item.width : wHeight / item.height
+                  } else if (!wFit) {
+                    scale = wWidth / item.width
+                  } else {
+                    scale = wHeight / item.height
+                  }
+
+                  eWidth = item.width * scale
+                  eHeight = item.height * scale
+                }
+                // 视频
+                return (
+                  <PhotoView
+                    key={item.name}
+                    width={eWidth}
+                    height={eHeight}
+                    render={({ scale, attrs }) => {
+                      const width = attrs.style.width;
+                      const offset = (width - eWidth) / eWidth;
+                      // 保持子节点的 scale 的稳定
+                      const childScale = scale === 1 ? scale + offset : 1 + offset;
+
+                      return (
+                        <div
+                          {...attrs}
+                          className={`flex-none flex flex-col items-center justify-center bg-white ${attrs.className}`}
+                        >
+                          <div style={{ transform: `scale(${childScale})` }}>
+                            <Player>
+                              <source src={item.source} />
+                            </Player>
+                          </div>
+                        </div>
+                      );
+                    }}
+                  >
+                    <div className="photo-item video-item">
+                      <PhotoItem
+                        photo={item}
+                        onView={handlerView}
+                      ></PhotoItem>
+                    </div>
+                  </PhotoView>
+                )
+              } else {
+                return (
+                  <PhotoView key={item.name} src={item.source}>
+                    <div className="photo-item">
+                      <PhotoItem
+                        photo={item}
+                        onView={handlerView}
+                      ></PhotoItem>
+                    </div>
+                  </PhotoView>
+                )
+              }
             })
           }
         </div>
@@ -93,7 +167,7 @@ function Gallery(props) {
     }
 
     return (
-      <PhotoProvider>
+      <PhotoProvider loop={true}>
         <Checkbox.Group value={checkedList} onChange={handleSelect}>
           {gallerys}
         </Checkbox.Group>
